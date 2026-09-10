@@ -1,0 +1,16 @@
+# Relatório — Erros da PetShopApi
+
+| **O que eu chamei** | **O que a resposta mostrou** | **Regra REST violada** | **Como eu redesenharia** |
+|----------------------|------------------------------|-------------------------|---------------------------|
+| GET /pets | Retorna todos os pets sem paginação | Coleções grandes sem paginação | Implementar `limit` e `offset` ou `page/size` |
+| GET /pets/{id} | Retorna 200 mesmo quando não existe | Não usar `404 Not Found` | Retornar `404` quando recurso não for encontrado |
+| POST /pets | Cria recurso mas não retorna Location | Falta de cabeçalho `Location` | Usar `201 Created` com `Location` |
+| PUT /pets/{id} | Aceita atualização parcial | Semântica incorreta do PUT | Usar `PATCH` para atualizações parciais |
+| DELETE /pets/{id} | Retorna 200 com corpo | DELETE deve retornar `204 No Content` | Ajustar resposta para `204` |
+| GET /consultas | Retorna dados sensíveis sem autenticação | Falta de segurança/autorização | Exigir autenticação/autorização |
+| POST /consultas | Aceita dados inválidos sem validação | Não usar `400 Bad Request` | Validar entrada e retornar `400` |
+| GET /tutores | Retorna lista sem filtro | Falta de parâmetros de busca | Implementar query params (`?nome=...`) |
+| POST /tutores | Retorna 200 em vez de 201 | Semântica incorreta de criação | Usar `201 Created` |
+| PUT /tutores/{id} | Sobrescreve sem checar existência | Não usar `404 Not Found` | Validar existência antes de atualizar |
+| DELETE /tutores/{id} | Permite exclusão múltipla sem confirmação | Falta de consistência | Retornar `404` se não existir, `204` se excluir |
+| GET /status | Retorna mensagem genérica sem código adequado | Não usar códigos HTTP corretos | Usar `200 OK` com corpo JSON estruturado |
